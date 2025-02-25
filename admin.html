@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Tax Laws - Ghana</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>Admin Panel</h1>
+                <div class="auth-section">
+                    <span class="user-email"></span>
+                    <button class="logout-button">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Login Section -->
+        <section class="login-section">
+            <div class="login-card">
+                <h2>Admin Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="primary-button">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Content Section -->
+        <section class="content-section" style="display: none;">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="taxLawsTab">Tax Laws</button>
+                <button class="tab-button" data-tab="practiceNotesTab">Practice Notes</button>
+            </div>
+
+            <!-- Tax Laws Tab -->
+            <div id="taxLawsTab" class="tab-content active">
+                <div class="upload-section">
+                    <h2>Add New Tax Law</h2>
+                    <form id="taxLawForm">
+                        <div class="form-group">
+                            <label for="taxLawTitle">Title</label>
+                            <input type="text" id="taxLawTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxLawDescription">Description</label>
+                            <textarea id="taxLawDescription" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxLawContent">Content</label>
+                            <textarea id="taxLawContent" name="content" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxLawDocument">PDF Document (Optional)</label>
+                            <input type="file" id="taxLawDocument" name="document" accept=".pdf">
+                        </div>
+                        <button type="submit" class="primary-button">Add Tax Law</button>
+                    </form>
+                </div>
+                <div class="content-list">
+                    <h2>Existing Tax Laws</h2>
+                    <div id="taxLawsList" class="items-list">
+                        <!-- Tax laws will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Notes Tab -->
+            <div id="practiceNotesTab" class="tab-content">
+                <div class="upload-section">
+                    <h2>Add New Practice Note</h2>
+                    <form id="practiceNoteForm">
+                        <div class="form-group">
+                            <label for="practiceNoteTitle">Title</label>
+                            <input type="text" id="practiceNoteTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="practiceNoteDescription">Description</label>
+                            <textarea id="practiceNoteDescription" name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="practiceNoteContent">Content</label>
+                            <textarea id="practiceNoteContent" name="content" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="practiceNoteDocument">PDF Document (Optional)</label>
+                            <input type="file" id="practiceNoteDocument" name="document" accept=".pdf">
+                        </div>
+                        <button type="submit" class="primary-button">Add Practice Note</button>
+                    </form>
+                </div>
+                <div class="content-list">
+                    <h2>Existing Practice Notes</h2>
+                    <div id="practiceNotesList" class="items-list">
+                        <!-- Practice notes will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

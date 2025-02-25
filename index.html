@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Laws - Ghana</title>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+
+        /* Splash Screen */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0066ff;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+
+        .app-logo {
+            background: white;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .app-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #0066ff;
+        }
+
+        .app-name {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .loading-bar {
+            position: absolute;
+            bottom: 100px;
+            width: 120px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 40%;
+            background: white;
+            border-radius: 2px;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(250%); }
+        }
+
+        /* Welcome Screen */
+        #welcomeScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ffffff;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            z-index: 9998;
+            overflow-y: auto;
+        }
+
+        .welcome-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .welcome-header .app-logo {
+            width: 40px;
+            height: 40px;
+            margin: 0;
+        }
+
+        .welcome-header .app-name {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+
+        .welcome-content {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        .welcome-illustration {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .welcome-illustration svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) { animation-delay: 0s; }
+        .floating-element:nth-child(2) { animation-delay: 0.5s; }
+        .floating-element:nth-child(3) { animation-delay: 1s; }
+        .floating-element:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066ff, #00a3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .welcome-text {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 32px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateX(4px);
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: #e7f1ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0066ff;
+        }
+
+        .feature-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        #getStartedButton {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 32px;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #getStartedButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+            background: #0052cc;
+        }
+
+        #getStartedButton:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Paywall */
+        #paywall {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ffffff;
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            overflow-y: auto;
+        }
+
+        .paywall-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .paywall-title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066ff, #00a3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .paywall-subtitle {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .subscription-options {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .subscription-option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .subscription-option.recommended {
+            border-color: #0066ff;
+            background: #f0f7ff;
+        }
+
+        .recommended-badge {
+            background: #0066ff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .period {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0066ff;
+            margin-bottom: 8px;
+        }
+
+        .price-detail {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .email-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+            transition: border-color 0.3s;
+        }
+
+        .email-input:focus {
+            border-color: #0066ff;
+            outline: none;
+        }
+
+        .payment-section {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        #subscribeButton {
+            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 102, 255, 0.1);
+        }
+
+        #subscribeButton:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #subscribeButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 102, 255, 0.2);
+        }
+
+        #subscribeButton:hover:before {
+            opacity: 1;
+        }
+
+        #subscribeButton:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 102, 255, 0.1);
+        }
+
+        #subscribeButton:disabled {
+            background: linear-gradient(135deg, #ccc 0%, #999 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #subscribeButton .icon {
+            font-size: 20px;
+        }
+
+        #subscribeButton .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 102, 255, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.98);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 99999;
+        }
+
+        .success-animation.active {
+            display: flex;
+            animation: fadeInBg 0.3s ease-out forwards;
+        }
+
+        .success-check {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .success-animation.active .success-check {
+            animation: scaleIn 0.5s ease-out 0.3s forwards;
+        }
+
+        .success-check__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #0066ff;
+            fill: none;
+        }
+
+        .success-animation.active .success-check__circle {
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        .success-check__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: #0066ff;
+        }
+
+        .success-animation.active .success-check__check {
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 1.4s forwards;
+        }
+
+        .success-message {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0066ff;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .success-animation.active .success-message {
+            animation: slideUp 0.5s ease-out 1.7s forwards;
+        }
+
+        .success-submessage {
+            font-size: 18px;
+            color: #666;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .success-animation.active .success-submessage {
+            animation: slideUp 0.5s ease-out 1.9s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Content Section */
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        /* Tax Law Items */
+        .tax-law-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #fff;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            cursor: pointer;
+        }
+
+        .tax-law-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #0066ff;
+        }
+
+        .tax-law-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0066ff;
+            font-size: 24px;
+        }
+
+        .tax-law-content {
+            flex: 1;
+        }
+
+        .tax-law-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .tax-law-date {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .tax-law-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e6f0ff;
+            color: #0066ff;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        /* Content Item */
+        .content-item {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .content-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-item h3 {
+            color: #0066ff;
+            margin-bottom: 10px;
+        }
+
+        .content-item p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .content-item .description {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        /* PDF Link */
+        .pdf-link {
+            display: inline-block;
+            background: #0066ff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .pdf-link:hover {
+            background: #0052cc;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* Error */
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-button.active {
+            color: #0066ff;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .modal-header {
+            text-align: center;
+            padding: 32px 48px;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin: 0 0 16px 0;
+            line-height: 1.3;
+        }
+
+        .modal-header .description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .modal-body {
+            padding: 32px 48px 48px;
+            font-size: 17px;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .modal-body .date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .modal-body .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .modal-body p {
+            margin-bottom: 16px;
+        }
+
+        .modal-body h3 {
+            font-size: 22px;
+            color: #333;
+            margin: 32px 0 16px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-header {
+                padding: 24px;
+            }
+
+            .modal-body {
+                padding: 24px;
+            }
+
+            .modal-header h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            padding-bottom: 80px;
+        }
+
+        /* Paywall Footer */
+        .paywall-footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 16px;
+            opacity: 0.8;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 12px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .secure-badge svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* PDF Section */
+        .pdf-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-link:hover {
+            background: #e9ecef;
+        }
+
+        .pdf-link svg {
+            margin-right: 8px;
+        }
+
+        /* Support Section */
+        .support-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .support-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .support-card h3 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .contact-info {
+            margin-top: 16px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .contact-item svg {
+            margin-right: 12px;
+            color: #0066ff;
+        }
+
+        .contact-item a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: #0066ff;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .faq-item p {
+            color: #666;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen">
+        <div class="app-logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+        </div>
+        <div class="app-name">Tax Laws - Ghana</div>
+        <div class="loading-bar"></div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <div class="welcome-header">
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24" fill="#0066ff">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="app-name">Tax Laws - Ghana</div>
+        </div>
+        
+        <div class="welcome-content">
+            <div class="welcome-illustration">
+                <svg viewBox="0 0 200 200" style="fill: #0066ff;">
+                    <path d="M140 20H60c-5.5 0-10 4.5-10 10v140c0 5.5 4.5 10 10 10h80c5.5 0 10-4.5 10-10V30c0-5.5-4.5-10-10-10zm-40 150c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm40-30H60V40h80v100z"/>
+                </svg>
+                <div class="floating-elements">
+                    <div class="floating-element" style="top: 20%; left: 10%;">📚</div>
+                    <div class="floating-element" style="top: 30%; right: 15%;">⚖️</div>
+                    <div class="floating-element" style="bottom: 25%; left: 15%;">📋</div>
+                    <div class="floating-element" style="bottom: 35%; right: 10%;">💼</div>
+                </div>
+            </div>
+
+            <h1 class="welcome-title">Your Complete Tax Law Resource</h1>
+            <p class="welcome-text">Access Ghana's most comprehensive collection of tax laws and practice notes</p>
+            
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <div class="feature-text">Comprehensive Tax Law Database</div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">⚖️</div>
+                    <div class="feature-text">Expert Practice Notes</div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-text">Regular Updates</div>
+                </li>
+            </ul>
+
+            <button id="getStartedButton">Get Started</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Tax Laws - Ghana</h1>
+    </header>
+
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="content-section active" id="taxLawsSection">
+                <h2>Tax Laws</h2>
+                <div id="taxLawsList" class="content-list"></div>
+            </div>
+
+            <div class="content-section" id="practiceNotesSection">
+                <h2>Practice Notes</h2>
+                <div id="practiceNotesList" class="content-list"></div>
+            </div>
+
+            <div class="content-section" id="supportSection">
+                <h2>Support</h2>
+                <div class="support-content">
+                    <div class="support-card">
+                        <h3>Contact Us</h3>
+                        <p>Need help? Get in touch with our support team.</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                                </svg>
+                                <a href="mailto:info@sbmindtechnologies.com">info@sbmindtechnologies.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                                </svg>
+                                <a href="tel:+233559118581">055 911 8581</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="support-card">
+                        <h3>FAQs</h3>
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <h4>How do I access the tax laws?</h4>
+                                <p>Simply navigate to the Tax Laws section and click on any law to view its contents. You can also search for specific laws using keywords.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>Are the practice notes regularly updated?</h4>
+                                <p>Yes, our practice notes are updated regularly to reflect the latest changes in tax laws and regulations.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>How can I report an issue?</h4>
+                                <p>If you encounter any issues, please email us at info@sbmindtechnologies.com with details of the problem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paywall -->
+    <div id="paywall">
+        <div class="paywall-header">
+            <h3 class="paywall-title">Unlock Full Access</h3>
+            <p class="paywall-subtitle">Get lifetime access to Ghana's most comprehensive tax law database</p>
+        </div>
+        
+        <div class="subscription-options">
+            <div class="subscription-option recommended">
+                <div class="recommended-badge">Lifetime Access</div>
+                <div class="period">One-time Payment</div>
+                <div class="price">GHS 100</div>
+                <div class="price-detail">Unlimited access forever</div>
+                <ul class="feature-list" style="text-align: left; margin-top: 24px;">
+                    <li class="feature-item">
+                        <div class="feature-icon">📚</div>
+                        <div class="feature-text">Complete Tax Law Database</div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">⚖️</div>
+                        <div class="feature-text">Expert Practice Notes</div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🔄</div>
+                        <div class="feature-text">Regular Updates</div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-text">Latest Amendements</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="payment-section">
+            <input type="email" class="email-input" id="paymentEmail" placeholder="Enter your email address" required>
+            <button id="subscribeButton" onclick="handlePayment()">
+                <span class="icon">💳</span>
+                Pay GHS 100
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Processing...
+                </div>
+            </button>
+        </div>
+        
+        <div class="paywall-footer">
+            <div class="secure-badge">
+                <svg viewBox="0 0 24 24" width="12" height="12">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.5 1.1 2.5 2.5V13h-5v-3.5C9.5 8.1 10.6 7 12 7zm0 10c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/>
+                </svg>
+                Secured by Paystack
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Animation -->
+    <div class="success-animation" id="successAnimation">
+        <div class="success-check">
+            <svg class="success-check__circle" viewBox="0 0 52 52">
+                <circle cx="26" cy="26" r="25" fill="none"/>
+                <path class="success-check__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        <div class="success-message">Payment Successful!</div>
+        <div class="success-submessage">Welcome to Tax Laws - Ghana!</div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <div class="tax-law-icon" style="margin-bottom: 16px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" style="margin-right: 8px;">
+                        <path fill="currentColor" d="M12 2L4 7v10l8 5 8-5V7l-8-5zM12 4.2l5.1 3.2-5.1 3.2L7 7.4l5-3.2zm-1 11.3L6 12.4v-3l5 3.1v3l-5 3.1z"/>
+                    </svg>
+                </div>
+                <h2 id="modalTitle"></h2>
+                <p class="text-muted" id="modalDate"></p>
+            </div>
+            <p id="modalDescription" class="modal-description"></p>
+            <div id="modalContent" class="modal-body"></div>
+            <div class="pdf-section">
+                <a href="" class="pdf-link" target="_blank" download>
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,13V19H15V13H13M9,13V19H11V13H9Z"/>
+                    </svg>
+                    Download to Library
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-button active" data-section="taxLawsSection">Tax Laws</button>
+        <button class="nav-button" data-section="practiceNotesSection">Practice Notes</button>
+        <button class="nav-button" data-section="supportSection">Support</button>
+    </nav>
+
+    <script>
+        // API endpoint
+        const API_URL = window.location.hostname.includes('ngrok') 
+            ? 'https://fast-inherently-sheep.ngrok-free.app/ghana-tax-laws/api'
+            : '/ghana-tax-laws/api';
+
+        // DOM Elements
+        const taxLawsList = document.getElementById('taxLawsList');
+        const practiceNotesList = document.getElementById('practiceNotesList');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const sections = document.querySelectorAll('.content-section');
+        const modal = document.getElementById('contentModal');
+        const modalClose = modal.querySelector('.modal-close');
+
+        // Modal functions
+        function openModal(title, description, content, fileUrl, date) {
+            const modalContent = modal.querySelector('.modal-content');
+            const icon = title.toLowerCase().includes('amendment') ? '📝' : 
+                        title.toLowerCase().includes('regulation') ? '⚖️' : 
+                        title.toLowerCase().includes('act') ? '📋' : '📜';
+
+            modalContent.innerHTML = `
+                <button class="modal-close">&times;</button>
+                <div class="modal-header">
+                    <div class="tax-law-icon" style="margin-bottom: 16px;">
+                        ${icon}
+                    </div>
+                    <h2 id="modalTitle">${title}</h2>
+                    <p class="text-muted" id="modalDate">${date}</p>
+                </div>
+                <p id="modalDescription" class="modal-description">${description}</p>
+                <div id="modalContent" class="modal-body">${content}</div>
+                ${fileUrl ? `
+                <div class="pdf-section">
+                    <a href="uploads/${fileUrl}" class="pdf-link" target="_blank" download>
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,13V19H15V13H13M9,13V19H11V13H9Z"/>
+                        </svg>
+                        Download to Library
+                    </a>
+                </div>
+                ` : ''}
+            `;
+            modal.style.display = 'flex';
+            
+            // Reattach close event listener
+            const modalClose = modal.querySelector('.modal-close');
+            modalClose.addEventListener('click', closeModal);
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal when clicking close button
+        modalClose.addEventListener('click', closeModal);
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+
+        // Utility function to format dates
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Utility function to check if a date is recent (within 30 days)
+        function isRecent(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 30;
+        }
+
+        // Load tax laws
+        async function loadTaxLaws() {
+            taxLawsList.innerHTML = '<div class="loading">Loading tax laws...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/get_content.php?type=tax_laws`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (!data.data || !Array.isArray(data.data)) {
+                    throw new Error('Invalid data format received from server');
+                }
+
+                if (data.data.length === 0) {
+                    taxLawsList.innerHTML = '<div class="no-content">No tax laws available</div>';
+                    return;
+                }
+
+                taxLawsList.innerHTML = data.data.map(law => `
+                    <div class="tax-law-item" onclick="openModal('${law.title.replace(/'/g, "\\'")}', '${law.description.replace(/'/g, "\\'")}', '${law.content.replace(/'/g, "\\'")}', '${law.file_url || ''}', '${formatDate(law.updated_at || law.created_at)}')">
+                        <div class="tax-law-icon">
+                            ${law.title.toLowerCase().includes('amendment') ? '📝' : 
+                              law.title.toLowerCase().includes('regulation') ? '⚖️' : 
+                              law.title.toLowerCase().includes('act') ? '📋' : '📜'}
+                        </div>
+                        <div class="tax-law-content">
+                            <div class="tax-law-title">
+                                ${law.title}
+                                ${isRecent(law.updated_at) ? '<span class="tax-law-badge">New</span>' : ''}
+                            </div>
+                            <div class="tax-law-date">Updated: ${formatDate(law.updated_at || law.created_at)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading tax laws:', error);
+                taxLawsList.innerHTML = '<div class="error">Error loading tax laws. Please try again later.</div>';
+            }
+        }
+
+        // Load practice notes
+        async function loadPracticeNotes() {
+            try {
+                const response = await fetch(`${API_URL}/get_content.php?type=practice_notes`);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                practiceNotesList.innerHTML = data.data.map(note => `
+                    <div class="tax-law-item" onclick="openModal('${note.title.replace(/'/g, "\\'")}', '${note.description.replace(/'/g, "\\'")}', '${note.content.replace(/'/g, "\\'")}', '${note.file_url || ''}', '${formatDate(note.updated_at || note.created_at)}')">
+                        <div class="tax-law-icon">
+                            📚
+                        </div>
+                        <div class="tax-law-content">
+                            <div class="tax-law-title">
+                                ${note.title}
+                                ${isRecent(note.updated_at) ? '<span class="tax-law-badge">New</span>' : ''}
+                            </div>
+                            <div class="tax-law-description">${note.description}</div>
+                            <div class="tax-law-date">Updated: ${formatDate(note.updated_at || note.created_at)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading practice notes:', error);
+                practiceNotesList.innerHTML = '<div class="error">Error loading practice notes. Please try again later.</div>';
+            }
+        }
+
+        // Navigation
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.dataset.section) {
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    // Show active section
+                    sections.forEach(section => {
+                        section.style.display = section.id === button.dataset.section ? 'block' : 'none';
+                    });
+                }
+            });
+        });
+
+        // Initial section display
+        sections.forEach(section => {
+            section.style.display = section.id === 'taxLawsSection' ? 'block' : 'none';
+        });
+
+        // Splash and Welcome Screen Logic
+        window.addEventListener('load', () => {
+            if (checkAccess()) {
+                // If user has already paid, skip splash and welcome screens
+                document.getElementById('splashScreen').style.display = 'none';
+                document.getElementById('welcomeScreen').style.display = 'none';
+                loadTaxLaws();
+                loadPracticeNotes();
+            } else {
+                // Show splash screen for 3 seconds
+                setTimeout(() => {
+                    const splashScreen = document.getElementById('splashScreen');
+                    splashScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        document.getElementById('welcomeScreen').style.display = 'flex';
+                    }, 500);
+                }, 3000);
+            }
+        });
+
+        // Welcome Screen Logic
+        document.getElementById('getStartedButton').addEventListener('click', () => {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            showPaywall(); // Show paywall after welcome screen
+        });
+
+        // Paywall Logic
+        function showPaywall() {
+            document.getElementById('paywall').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePaywall() {
+            document.getElementById('paywall').style.display = 'none';
+            document.body.style.overflow = '';
+            loadTaxLaws();
+            loadPracticeNotes();
+        }
+
+        document.getElementById('closePaywall').addEventListener('click', hidePaywall);
+        document.getElementById('paywallOverlay').addEventListener('click', hidePaywall);
+
+        // Payment handling
+        function handlePayment() {
+            const button = document.getElementById('subscribeButton');
+            const email = document.getElementById('paymentEmail').value;
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+
+            // Disable button and show loading
+            button.disabled = true;
+            button.querySelector('.loading').style.display = 'flex';
+
+            try {
+                const handler = PaystackPop.setup({
+                    key: 'pk_test_69641eb5ac7fe49353fab0c5c41ac33d713e644e',
+                    email: email,
+                    amount: 10000,
+                    currency: 'GHS',
+                    ref: 'gtl_' + Math.floor((Math.random() * 1000000000) + 1),
+                    callback: function(response) {
+                        // Save access to localStorage
+                        localStorage.setItem('gtl_access', JSON.stringify({
+                            email: email,
+                            timestamp: Date.now(),
+                            reference: response.reference
+                        }));
+                        
+                        // Hide paywall first
+                        document.getElementById('paywall').style.display = 'none';
+                        
+                        // Then show success animation
+                        showSuccessAnimation();
+                    },
+                    onClose: function() {
+                        // Re-enable button and hide loading
+                        button.disabled = false;
+                        button.querySelector('.loading').style.display = 'none';
+                    }
+                });
+                handler.openIframe();
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Payment system error. Please try again.');
+                button.disabled = false;
+                button.querySelector('.loading').style.display = 'none';
+            }
+        }
+
+        function showSuccessAnimation() {
+            const successAnimation = document.getElementById('successAnimation');
+            successAnimation.classList.add('active');
+            
+            // Hide success animation and transition to content after animations complete
+            setTimeout(() => {
+                successAnimation.classList.remove('active');
+                loadTaxLaws();
+                loadPracticeNotes();
+            }, 3500); // Increased time to allow for all animations to complete
+        }
+
+        // Verify Paystack is loaded
+        window.addEventListener('load', function() {
+            if (typeof PaystackPop === 'undefined') {
+                console.error('Paystack not loaded');
+                alert('Payment system not loaded. Please refresh the page.');
+            }
+        });
+
+        // Check if user has already paid
+        function checkAccess() {
+            const accessData = localStorage.getItem('gtl_access');
+            if (accessData) {
+                return true;
+            }
+            return false;
+        }
+
+        // Check access on page load
+        window.addEventListener('load', function() {
+            if (checkAccess()) {
+                // If user has already paid, skip splash and welcome screens
+                document.getElementById('splashScreen').style.display = 'none';
+                document.getElementById('welcomeScreen').style.display = 'none';
+                loadTaxLaws();
+                loadPracticeNotes();
+            } else {
+                // Show splash screen for 3 seconds
+                setTimeout(() => {
+                    const splashScreen = document.getElementById('splashScreen');
+                    splashScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        document.getElementById('welcomeScreen').style.display = 'flex';
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
